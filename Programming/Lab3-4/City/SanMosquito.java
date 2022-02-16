@@ -1,6 +1,7 @@
 package City;
 
 import Things.Thing;
+
 import java.util.ArrayList;
 
 public class SanMosquito implements MoonCity{
