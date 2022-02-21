@@ -6,7 +6,12 @@ public abstract class SecondaryCharacter extends ShortGuy{
     }
 
     public String havingFun(){
-        return "Коротышки веселились.";
+        class Fun {
+            public static String makeSound(){
+                return "веселились";
+            }
+        }
+        return "Коротышки " + Fun.makeSound() + ".";
     }
 
     public String throwBalls(){

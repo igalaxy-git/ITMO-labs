@@ -1,15 +1,20 @@
 package Things;
 
+import Throwable.NamingException;
+
 public class Thing {
     private final String type;
     private String work;
     private String place;
 
-    Thing(){
+    public Thing(){
         this.type = "Nothingness";
     }
 
     public Thing(String type){
+        if (type.equals("")){
+            throw new NamingException("Type is empty.");
+        }
         this.type = type;
     }
 
