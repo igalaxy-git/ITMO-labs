@@ -1,0 +1,153 @@
+public class PQ implements PriorityQueue {
+    // Очередь реализована на массиве размера 10
+    private static final int SIZE = 10;
+    private final Integer[] array = new Integer[SIZE];
+    private int afterTheLast = 0; // первый свободный элемент
+    // объявление лока и условий
+    private final ReentrantLock lock;
+    Condition emptyCondition, fullCondition, first, second;
+
+    public PQ() {
+        // инициализация лока и условий
+    }
+
+    // помещает значение val в очередь
+    public void insert(int val) throws InterruptedException {
+        lock.lock();
+        try {
+            // пока очередь полная (метод full)
+                // заблокировать поток по условию fullCondition (fullCondition.await())
+            // добавить значение в последний свободный элемент
+            // отсортировать очередь (метод sort)
+            // вывести её (метод print)
+            emptyCondition.signalAll();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    // удаляеет максимальное значение-приоритет из очереди и возвращает его как результат
+    public int deleteMax(int id) throws InterruptedException {
+        lock.lock();
+        Integer max;
+        try {
+            // пока очередь пустая (метод empty)
+                // заблокировать поток по условию emptyCondition (emptyCondition.await())
+
+            if (id == 1 && array[0] > 5) {
+                first.signalAll();
+                second.await();
+            } else if (id == 2 && array[0] <= 5) {
+                second.signalAll();
+                first.await();
+            }
+
+            // поменять первый и последний заполненный элементы местами (метод swap)
+            max = array[afterTheLast - 1];
+            // обнулить последний заполненный элемент
+            // отсортировать очередь (метод sort)
+            // вывести её (метод print)
+            fullCondition.signalAll();
+        } finally {
+            lock.unlock();
+        }
+        return max;
+    }
+
+    // возвращает true, если очередь полная, иначе false
+    public boolean full() {
+        return afterTheLast == 10;
+    }
+
+    // возвращает true, если очередь пустая, иначе false
+    public boolean empty() {
+        return afterTheLast == 0;
+    }
+
+    // сортировка очереди
+    private void sort() {
+        for (int i = 0; i < afterTheLast; i++)
+            for (int j = afterTheLast - 1; j > 0; j--)
+                if (array[j] > array[j/2])
+                    // если сын больше родителя, то поменять элементы местами (метод swap)
+    }
+
+    // меняет местами элементы с переданными индексами
+    private void swap(int i, int j) {
+        Integer temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+
+    // вывод очереди
+    private void print(){
+        System.out.print(Thread.currentThread().getName() + ": ");
+        for (int i = 0; i < afterTheLast; i++)
+            System.out.print(array[i] + " ");
+        System.out.println();
+    }
+}
+
+// класс производителя
+public class Producer implements Runnable {
+    private final PQ pq;
+
+    public Producer(PQ pq, int id){
+        // инициализировать очередь
+        this.pq = pq;
+        // создать поток
+        Thread producer = new Thread(this);
+        // задать потоку имя
+        producer.setName("Производитель " + id);
+        // запустить поток
+        producer.start();
+    }
+
+    public void run() {
+        try {
+            while(true) {
+                // генерация количества итераций
+                // цикл, генерация значений и добавление их в очередь (метод insert)
+                int k = (int) (Math.random() * 3) + 1;
+                for (int i = 0; i <= k; i++) {
+                    pq.insert((int) (Math.random() * 10) + 1);
+                }
+                Thread.sleep(1000);
+            }
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+// класс потребителя
+public class Consumer implements Runnable {
+    private final PQ pq;
+    private int id;
+
+    public Consumer(PQ pq, int id){
+        // инициализировать очередь
+        this.pq = pq;
+        // инициализировать верхнюю границу
+        this.id = id;
+        // создать поток
+        Thread consumer = new Thread(this);
+        // задать потоку имя
+        consumer.setName("Потребитель " + id);
+        // запустить поток
+        consumer.start();
+    }
+
+    public void run() {
+        try {
+            while(true) {
+                // удаление значений из очереди, если возможно (метод deleteMax)
+                pq.deleteMax(id);
+                Thread.sleep(500);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}

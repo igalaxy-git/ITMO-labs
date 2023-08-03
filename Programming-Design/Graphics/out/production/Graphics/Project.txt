@@ -1,0 +1,163 @@
+// Подключить библиотеки Swing, AWT, AWT.Event
+
+// Реализовать графическое приложение "Пятнашки"
+public class Main {
+    private int indexOfNull = 15; // индекс нулевого элемента
+    private int[] dice = new int[16] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0}; // массив с числами от 0 до 15
+    private final JButton[] buttons = new JButton[16]; // массив кнопок для отображения чисел
+    private JFrame frame;
+    private JPanel panel;
+    private JMenuBar menu;
+
+    public Main() {
+        // Создать новый контейнер типа JFrame и задать ему имя "Пятнашки"
+        // Задать размеры фрейма (setSize)
+        // Центрировать фрейм (setLocationRelativeTo(null))
+        // Запретить менять размер фрейма (setResizable(false))
+        // Завершить работу, если пользователь закрывает приложение (setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE))
+
+        // Добавить в фрейм обработку событий клавиатуры (addKeyListener)
+        /*
+            Если пользователь нажал кнопку "влево"
+                Проверить находится ли нулевой элемент в первых трех столбцах (indexOfNull % 4 != 3)
+                    Поменять местами нулевой элемент и элемент справа от него (метод swap(indexOfNull, indexOfNull + 1))
+                    indexOfNull = indexOfNull + 1
+            Если пользователь нажал кнопку "вверх"
+                Проверить находится ли нулевой элемент в первых трех строчках (indexOfNull < 12)
+                    Поменять местами нулевой элемент и элемент снизу от него (метод swap(indexOfNull, indexOfNull + 4))
+                    indexOfNull = indexOfNull + 4
+            Если пользователь нажал кнопку "вправо"
+                Проверить находится ли нулевой элемент в последних трех столбцах (indexOfNull % 4 != 0)
+                    Поменять местами нулевой элемент и элемент слева от него (метод swap(indexOfNull, indexOfNull - 1))
+                    indexOfNull = indexOfNull - 1
+            Если пользователь нажал кнопку "вниз"
+                Проверить находится ли нулевой элемент в последних трех строчках (indexOfNull > 3)
+                    Поменять местами нулевой элемент и элемент сверху от него (метод swap(indexOfNull, indexOfNull - 4))
+                    indexOfNull = indexOfNull - 4
+            Обновить кнопки (метод update)
+        */
+
+        // Создать и настроить меню (метод createMenu)
+        // Добавить меню в фрейм
+
+        // Создать панель с диспетчером компоновки GridLayout
+        panel = new JPanel();
+        panel.setLayout(new GridLayout(4, 4));
+
+        // Пермешать кости, то есть случайным образом поменять местами элементы массива dice (метод shuffle)
+        // Цикл от 0 до 16 с созданием кнопок и добавлением на панель
+            // Создать кнопки в массиве buttons с именами, соответсвующими элементам массива dice
+            buttons[i] = new JButton(String.valueOf(dice[i]));
+            // Обработка событий, нажатие кнопки
+            /*
+                Получить имя кнопки
+                Поменять местами элементы, если кнопка соседствует с нулевой (метод change)
+            */
+            // Добавить кнопку на панель
+            panel.add(buttons[i]);
+        // Добавить панель в фрейм
+        frame.add(panel);
+        // Сделать фрейм видимым
+        frame.setVisible(true);
+    }
+
+    // Метод создания меню
+    public void createMenu() {
+        // Создать строку меню
+        menu = new JMenuBar();
+
+        // Создать меню File
+        JMenu jmFile = new JMenu("File"); //Файл
+        jmFile.setMnemonic(KeyEvent.VK_F); // Задать мнемонику
+
+        JMenuItem jmiNew = new JMenuItem("New"); // Новая игра
+        jmiNew.setMnemonic(KeyEvent.VK_N); // Задать мнемонику
+        jmiNew.setAccelerator(KeyStroke.getKeyStroke("ctrl N")); // Задать акселератор
+        jmiNew.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                // Обновить массив dice
+                // Заново перетасовать (метод shuffle)
+                // Обновить кнопки (метод update)
+            }
+        });
+        jmFile.add(jmiNew);
+
+        JMenuItem jmiExit = new JMenuItem("Exit"); // Выход
+        jmiExit.setAccelerator(KeyStroke.getKeyStroke("ctrl E")); // Задать акселератор
+        jmiExit.setMnemonic(KeyEvent.VK_E); // Задать мнемонику
+        jmiExit.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        jmFile.add(jmiExit);
+
+        menu.add(jmFile);
+
+        // Создать меню Help
+        JMenu jmHelp = new JMenu("Help"); // Справка
+        jmHelp.setMnemonic(KeyEvent.VK_H); // Задать мнемонику
+
+        JMenuItem jmiAbout = new JMenuItem("About"); // О программе
+        jmiAbout.setMnemonic(KeyEvent.VK_A); // Задать мнемонику
+        jmiAbout.setAccelerator(KeyStroke.getKeyStroke("ctrl A")); // Задать акселератор
+        jmiAbout.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                // Открыть диалоговое окно с текстом
+                JOptionPane.showMessageDialog(null, "Игнатова Галина, P3165, 2023", "About", 1);
+            }
+        });
+        jmHelp.add(jmiAbout);
+
+        menu.add(jmHelp);
+    }
+
+    // Метод тасует все кости, кроме последней
+    public void shuffle() {
+        for (int i = 1; i < 15; i++) {
+            // Случайное значение от i до 14
+            int j = (int) (Math.random() * (15 - i));
+            // Поменять местами элементы i и j (метод swap(i, j))
+        }
+    }
+
+    // Метод меняет местами элементы массива dice с переданными индексами
+    public void swap(int a, int b) {
+        int temp = dice[a];
+        dice[a] = dice[b];
+        dice[b] = temp;
+    }
+
+    // Метод обновляет названия кнопок и их видимость
+    public void update() {
+        // Цикл по массиву buttons
+            // Обновление названий (buttons[i].setText(String.valueOf(dice[i])))
+            buttons[i].setVisible(true);
+        // После цикла кнопку с нулем скрыть
+        buttons[indexOfNull].setVisible(false);
+        // Проверить комбинацию на победу (метод win)
+        // Если комбинация выигрышная, то вывести диалоговое окно и начать новую игру
+    }
+
+    // Метод проверяет соседствует ли элемент с нулевым
+    // Если да, то вызывает методы swap и update
+    // Если нет, ничего не делает
+    public void change(int value) {
+        // Цикл по массиву dice, чтобы найти индекс элемента value
+        // Если индекс + 1 == indexOfNull или индекс - 1 == indexOfNull или индекс + 4 == indexOfNull или индекс - 4 == indexOfNull
+            // метод swap(index, indexOfNull)
+            // indexOfNull = индекс
+            // метод update
+    }
+
+    // Метод проверяет является ли текущая комбинация выигрышной
+    public boolean win() {
+        // Цикл от 0 до 15 по массиву dice с проверкой, что каждый элемент равен i + 1
+            // Иначе вернуть false
+        // Вернуть true
+    }
+
+    public static void main(String[] args) {
+        new Main();
+    }
+}
