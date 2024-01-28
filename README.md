@@ -1,5 +1,5 @@
 # ITMO-labs
-Работы, сделанные в процессе обучения на первом курсе.
+Работы, сделанные в процессе обучения.
 # СППО
 [Информатика](https://github.com/igalaxy-git/ITMO-labs/tree/main/Informatics-SE)
 
@@ -12,4 +12,6 @@
 # КТвД
 [Информатика](https://github.com/igalaxy-git/ITMO-labs/tree/main/Informatics-Design)
 
-[Программирование](https://github.com/igalaxy-git/ITMO-labs/tree/main/Programming-Design)
+[Программирование Java](https://github.com/igalaxy-git/ITMO-labs/tree/main/Programming-Design)
+
+[Программирование C#](https://github.com/igalaxy-git/CSharpLabs/tree/main/)
