@@ -14,4 +14,4 @@
 
 [Программирование Java](https://github.com/igalaxy-git/ITMO-labs/tree/main/Programming-Design)
 
-[Программирование C#](https://github.com/igalaxy-git/CSharpLabs/tree/main/)
+[Программирование C#](https://github.com/igalaxy-git/CSharpLabs/)
